@@ -145,8 +145,8 @@ Decide module names once in BRD §4.1. The same name appears everywhere:
 Give the assistant the **raw** file URLs so it reads plain Markdown instead of GitHub's HTML page:
 
 ```text
-https://raw.githubusercontent.com/<owner>/<repo>/main/templates/01-BRD.md
-https://raw.githubusercontent.com/<owner>/<repo>/main/guidelines/01-BRD.guide.md
+https://raw.githubusercontent.com/prame-dot-exe/gcb-adb-templates/main/templates/01-BRD.md
+https://raw.githubusercontent.com/prame-dot-exe/gcb-adb-templates/main/guidelines/01-BRD.guide.md
 ```
 
-[PROMPT.md](PROMPT.md) already lists all ten files; replace `<owner>/<repo>` once.
+[PROMPT.md](PROMPT.md) already lists all ten files with these links.

@@ -1,6 +1,6 @@
 # Prompt: Prototype → Application Design Book (ADB)
 
-> **Setup once:** replace `<owner>/<repo>` (and `main` if your branch differs) in the links below.
+> **Links** point to `prame-dot-exe/gcb-adb-templates` on `main`; if you fork the repo or use another branch, update them.
 > **Use:** copy everything below the line into your AI tool and attach or link the prototype (repo, screens, Figma, or demo notes).
 > If your AI tool can't open links, attach the 10 files from `templates/` and `guidelines/` instead.
 
@@ -12,12 +12,12 @@ You are a senior Solution Architect and Business Analyst. The user has finished 
 
 | Book | Template (structure to follow exactly) | Guideline (meaning of every field) |
 |---|---|---|
-| Overview & conventions | https://raw.githubusercontent.com/<owner>/<repo>/main/README.md | — |
-| 01 BRD | https://raw.githubusercontent.com/<owner>/<repo>/main/templates/01-BRD.md | https://raw.githubusercontent.com/<owner>/<repo>/main/guidelines/01-BRD.guide.md |
-| 02 SRS | https://raw.githubusercontent.com/<owner>/<repo>/main/templates/02-SRS.md | https://raw.githubusercontent.com/<owner>/<repo>/main/guidelines/02-SRS.guide.md |
-| 03 DB Schema | https://raw.githubusercontent.com/<owner>/<repo>/main/templates/03-DB-SCHEMA.md | https://raw.githubusercontent.com/<owner>/<repo>/main/guidelines/03-DB-SCHEMA.guide.md |
-| 04 Backend Spec | https://raw.githubusercontent.com/<owner>/<repo>/main/templates/04-BACKEND-SPEC.md | https://raw.githubusercontent.com/<owner>/<repo>/main/guidelines/04-BACKEND-SPEC.guide.md |
-| 05 Frontend Spec | https://raw.githubusercontent.com/<owner>/<repo>/main/templates/05-FRONTEND-SPEC.md | https://raw.githubusercontent.com/<owner>/<repo>/main/guidelines/05-FRONTEND-SPEC.guide.md |
+| Overview & conventions | https://raw.githubusercontent.com/prame-dot-exe/gcb-adb-templates/main/README.md | — |
+| 01 BRD | https://raw.githubusercontent.com/prame-dot-exe/gcb-adb-templates/main/templates/01-BRD.md | https://raw.githubusercontent.com/prame-dot-exe/gcb-adb-templates/main/guidelines/01-BRD.guide.md |
+| 02 SRS | https://raw.githubusercontent.com/prame-dot-exe/gcb-adb-templates/main/templates/02-SRS.md | https://raw.githubusercontent.com/prame-dot-exe/gcb-adb-templates/main/guidelines/02-SRS.guide.md |
+| 03 DB Schema | https://raw.githubusercontent.com/prame-dot-exe/gcb-adb-templates/main/templates/03-DB-SCHEMA.md | https://raw.githubusercontent.com/prame-dot-exe/gcb-adb-templates/main/guidelines/03-DB-SCHEMA.guide.md |
+| 04 Backend Spec | https://raw.githubusercontent.com/prame-dot-exe/gcb-adb-templates/main/templates/04-BACKEND-SPEC.md | https://raw.githubusercontent.com/prame-dot-exe/gcb-adb-templates/main/guidelines/04-BACKEND-SPEC.guide.md |
+| 05 Frontend Spec | https://raw.githubusercontent.com/prame-dot-exe/gcb-adb-templates/main/templates/05-FRONTEND-SPEC.md | https://raw.githubusercontent.com/prame-dot-exe/gcb-adb-templates/main/guidelines/05-FRONTEND-SPEC.guide.md |
 
 If you cannot open any of these files, stop and tell me which ones. Do not reconstruct a template from memory.
 
