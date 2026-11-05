@@ -2,216 +2,139 @@
 
 Explains every section of `templates/02-SRS.md`. Section numbers match the template.
 
-**Purpose of this book:** the technical view of the whole system. It turns the BRD's business answers into measurable targets, an architecture, workflows, security, infrastructure, delivery pipeline, and recovery plan.
+**Purpose of this book:** the technical view of the whole system. It turns the BRD's business answers into measurable targets, an architecture, workflows, security, infrastructure and recovery targets. Everything that is the same in every project (pipeline, monitoring, backups, security baseline, testing) lives in `CONVENTIONS.md` §6; this book only records what is specific.
 
 **Rules**
-- **Trace back to the BRD.** NFRs cite the BRD answer they come from; workflows cite features; DR targets cite the acceptable-loss answers.
-- **System level, not endpoint level.** Show workflows and components here; field-by-field contracts belong in ADB 04, tables in ADB 03, screens in ADB 05.
-- **Every number is justified.** If a target can't be traced to a BRD answer or a constraint, record it as an assumption.
-- **Decisions go in ADRs (§13)**, including any change to the fixed conventions in ADB 04/05.
+
+- **Trace back to the BRD.** NFRs and recovery targets cite the BRD answer they come from; workflows cite features. If a number can't be traced, record it as an assumption.
+- **System level, not endpoint level.** Field-level detail belongs in ADB 03–05.
+- **Standard sections** list only differences from `CONVENTIONS.md`, each with an ADR in §13. Write `None` when there are none.
+- **Optional sections** get one line `N/A — reason` when they don't apply.
 
 ---
 
-## 0. Document Info
-Same fields as the BRD, plus **Based on BRD version**: the BRD version this SRS was written against. When the BRD changes, review the SRS.
+## 0. Document Info · Core
+
+Same fields as the BRD, plus **Based on BRD version**. When the BRD changes, review the SRS.
 
 ---
 
-## 1. Non-Functional Requirements
+## 1. Non-Functional Requirements · Core
 
-| Field | Meaning | Example |
-|---|---|---|
-| ID | `NFR-NN` | `NFR-01` |
-| Category | Performance, Availability, Scalability, Security, Usability/Accessibility, Maintainability, Compatibility, Data retention, Localization | Performance |
-| Requirement | Quality in words | Search screens respond quickly at peak |
-| Measurable target | A number or verifiable condition | p95 `POST …/search` < 500 ms at 150 req/s |
-| Derived from (BRD) | The business answer behind it | BRD 3.5: 120 users active at Monday 9 am |
+`NFR-NN`. Only categories that matter for this project (performance, availability, security, compatibility, retention, localization…). Each target is a number or a checkable condition.
 
-**Translation cheatsheet**
-
-| BRD answer | NFR |
-|---|---|
-| "Down for an hour = meetings without data, not costly" | Availability 99.5% monthly; single region acceptable |
-| "Down for an hour = we lose sales" | Availability 99.9%+; multi-AZ, health-checked autoscaling |
-| "Users in the field with bad signal" | Compatibility: works on 3G; consider offline cache |
-| "Must keep records 5 years for audit" | Data retention 5 years; archive after 2 |
-| "Thai and English users" | Localization: th/en UI, Asia/Bangkok display time, UTC storage |
+| BRD answer                                             | NFR                                                   |
+| ------------------------------------------------------ | ----------------------------------------------------- |
+| "Down for an hour = meetings without data, not costly" | Availability 99.5% monthly; single region is fine     |
+| "Down for an hour = we lose sales"                     | Availability 99.9%+; multi-zone, health-checked       |
+| "Users in the field with bad signal"                   | Works on slow mobile networks; consider offline cache |
+| "Must keep records 5 years for audit"                  | Retention 5 years                                     |
+| "Thai and English users"                               | th/en UI, Asia/Bangkok display time, UTC storage      |
 
 ### 1.1 Capacity Estimate
-Show the arithmetic so reviewers can check it.
+
+Show the arithmetic so reviewers can check it:
 
 `peak RPS ≈ peak concurrent users × actions per user per minute ÷ 60 × requests per action`
 
-Example: 120 users × 4 actions/min ÷ 60 × 3 requests ≈ 24 req/s → design target 100 req/s (×4 headroom). Data growth: records/day × average row size × 365, plus indexes (~×1.5).
+Example: 120 × 4 ÷ 60 × 3 ≈ 24 req/s → design target 100 req/s (×4 headroom). Data growth: records/day × row size × 365 × 1.5 for indexes.
 
 ---
 
-## 2. Architecture
+## 2. Architecture · Core
 
-| Section | What to write | Tip |
-|---|---|---|
-| 2.1 Architecture Style | Monolith / modular monolith / microservices / serverless + why | A modular monolith (one Express app, one folder per module) is the default for this stack. Justify anything more distributed with an ADR. |
-| 2.2 System Context | The system as one box with users and external systems around it | Keep to one diagram a business person can follow |
-| 2.3 Container / Component | Deployable pieces (FE, BE, DB, cache, storage, jobs) and their connections | Label arrows with protocol (HTTPS, SQL, queue) |
-| 2.4 System Components | Responsibility, technology, who it talks to, owner | One responsibility per component |
-
-### 2.5 Tech Stack
-| Field | Meaning | Example |
-|---|---|---|
-| Layer | Part of the system | Validation |
-| Technology | Chosen tool | Zod |
-| Version | Pinned major | 3.x |
-| Reason for choice | Why it fits **this** project (requirement, constraint, team skill) | Shared schemas FE/BE; required by team convention |
-| Alternatives considered | What else was evaluated | Joi, class-validator |
-
-The fixed stack for this ADB is Next.js + shadcn/ui + Tailwind + ESLint (FE) and TypeScript + Express + Zod + PostgreSQL (BE). Fill the remaining rows (ORM/query builder, cache, hosting, monitoring) from the prototype or the interview.
+| Section                   | What to write                                                                                                                          |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.1 Architecture Style    | Default is a modular monolith. Anything more distributed needs a reason and an ADR                                                     |
+| 2.2 System Context        | One diagram a business person can follow: users, the app, outside systems                                                              |
+| 2.3 Components · Optional | Only when there is more than frontend, backend and database (jobs, cache, storage, queue)                                              |
+| 2.4 Tech Stack            | Only the open choices (`CONVENTIONS.md` §1), each with a one-line reason. Take them from the prototype's `package.json` when available |
 
 ---
 
-## 3. Workflows
+## 3. Workflows · Core
 
 ### 3.1 Workflow Catalog
-| Field | Meaning | Example |
-|---|---|---|
-| Workflow ID | `WF-NN` | `WF-04` |
-| Workflow | A user or system journey crossing components | Close project |
-| Modules | Modules involved | PRJ, MLS, ISS |
-| Trigger | What starts it | PM clicks Close |
-| Related features | BRD feature IDs | F-PRJ-03 |
 
-**Which workflows to include:** login/logout/token refresh, every create/edit with business rules, every status transition, anything touching an external service, file upload, background jobs. Plain CRUD with no rules can share one generic workflow.
+`WF-NN`. Only the main or hard flows that a developer couldn't work out from the backend spec: multi-step processes, approvals, money, outside services, unusual login. Usually 2–5 per project. Plain create/search/get/edit/delete and simple one-step rules need no workflow. The "Why it needs a diagram" column says in one line what makes it non-obvious; if you can't fill it, drop the workflow.
 
 ### 3.2 Sequence Diagrams
-One per workflow. Use the real endpoint paths from ADB 04 (`PUT /api/v1/project/:projectId/close`) and the real response codes. Always show the validation failure branch, the main business-rule failure, and timeouts/retries for external calls. The notes table lists which `BR-` rules apply at which step.
 
-### 3.3 State Diagrams
-One per entity with a status. States use the **exact enum values** from ADB 03 (lowercase snake_case). The transition table lists the endpoint that performs each transition, the roles allowed, and the guarding rule. Transitions not listed must be rejected by the API.
+One per workflow. Write messages as plain actions ("Close project", "Check open issues"), not endpoint paths, module codes or response codes; those are mapped during implementation. Show the main failure path and retries for outside services; validation errors are standard and left out.
 
-### 3.4 Background Jobs
-| Field | Meaning | Example |
-|---|---|---|
-| Job ID | `JOB-NN` | `JOB-02` |
-| Schedule / trigger | Cron expression or event | `0 1 * * *` (01:00 daily) |
-| What it does | Effect | Mark overdue tasks and notify owners |
-| Retry policy | Attempts and backoff | 3 attempts, exponential |
-| Failure alert | Where failures go | #alerts |
+### 3.3 State Diagrams · Optional
+
+One per item with statuses (BRD §4.2). States use the **exact enum values** from ADB 03 (lowercase snake_case). The table lists the action for each transition (plain words, not an endpoint) and the guarding rule; who may do it comes from BRD §4.4. Transitions not listed are rejected by the API.
+
+### 3.4 Background Jobs · Optional
+
+`JOB-NN`: schedule (cron or event), what it does, and what happens on failure (retries, alert).
 
 ---
 
-## 4. Data Flow
+## 4. Data Flow · Optional
 
-| Section | What to write |
-|---|---|
-| 4.1 Diagram | Sources → validation → services → storage → consumers (views, reports, exports, integrations) |
-| 4.2 Catalog | One row per significant flow: source, data, destination, transform, PII yes/no, frequency |
+`DF-NN`. Use when data comes from imports or other systems, or feeds reports and exports. Mark every flow carrying personal data; those drive ADB 03 §7.
 
-**Tip:** mark every flow carrying PII. Those rows drive §6.3 security measures and ADB 03 §7 retention.
+## 5. Integrations · Optional
 
----
-
-## 5. Integrations
-| Field | Meaning | Example |
-|---|---|---|
-| ID | `INT-NN` | `INT-01` |
-| Service | External system | LINE Messaging API |
-| Purpose | Why | Notify overdue tasks |
-| Type | REST / SDK / webhook / file | REST |
-| Direction | Outbound (we call) / inbound (they call us at `/api-ext/v1`) | Outbound |
-| Auth method | How we authenticate | Channel access token |
-| Rate limit | Provider limit | 500 msg/min |
-| Failure fallback | Behavior if unavailable | Queue and retry 3×, then email |
-| Docs | Official link | URL |
+`INT-NN`. One row per outside service: purpose, direction (outbound = we call; inbound = they call `/api-ext/v1`), auth, and what happens when it is down (from the BRD answer).
 
 ---
 
-## 6. Security
+## 6. Security · Core
 
-### 6.1 Authentication
-Fill each row concretely. Example: login via Google SSO (NextAuth), backend verifies a JWT signed by NextAuth, access token 15 min, refresh by NextAuth session rotation, MFA via Google, logout clears the session cookie.
-
-### 6.2 Authorization
-Describe the mechanism: `auth.middleware` sets `req.user`; `permission.middleware` checks a permission key (`project.edit`) against the user's roles; services check ownership. The endpoint-level map lives in ADB 04 §6.3.
-
-### 6.3 Security Measures
-| Area | What good looks like |
-|---|---|
-| Data in transit | HTTPS everywhere, HSTS |
-| Data at rest | Encrypted DB and backups; sensitive columns encrypted if required |
-| Secrets | Secret manager or CI secrets; `.env` never committed |
-| Input validation | Zod on params, query and body of every endpoint |
-| Rate limiting | Global per IP + stricter on login |
-| CORS | Only the frontend origins per environment |
-| Security headers | helmet defaults + CSP on the frontend |
-| Audit log | Who/what/when for create, edit, delete, status changes, permission changes |
-| Dependency scanning | Dependabot / `npm audit` in CI |
-| File upload | Allowed MIME types, size limit, private bucket, signed URLs |
-
-### 6.4 Compliance Implementation
-Each BRD §7 item → the concrete technical measure (table, endpoint, job, setting).
+| Section                                          | What to write                                                                                                        |
+| ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| 6.1 Authentication                               | Login method, session/token lifetime, MFA. Example: Google SSO via NextAuth, 15-min access token, MFA through Google |
+| 6.2 Authorization & Security Measures · Standard | `CONVENTIONS.md` §6.1–6.2. List only differences (e.g. encrypted columns, IP allow-list)                             |
+| 6.3 Compliance Implementation · Optional         | Each BRD §7 item → the concrete measure (table, endpoint, job, setting)                                              |
 
 ---
 
-## 7. Infrastructure
+## 7. Infrastructure · Core
 
-| Section | What to write |
-|---|---|
-| 7.1 Deployment Diagram | Where each container runs, networking, managed services |
-| 7.2 Inventory | Provider, size/tier, region, notes, and an estimated monthly cost (compare with the BRD budget constraint) |
-| 7.3 Environments | URLs for FE and BE, purpose, data type, deploy trigger |
-
-**Tip:** staging should match production's shape (same services, smaller sizes). Never put real personal data outside production unless anonymized.
+| Section                           | What to write                                                                                                               |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| 7.1 Inventory                     | Hosting for frontend, backend, database, other services; size; region; estimated monthly cost (compare with the BRD budget) |
+| 7.2 Environments                  | URLs and data type for Dev, Staging, Production. Never put real personal data outside production unless anonymized          |
+| 7.3 Deployment Diagram · Optional | Only when the setup is more than one frontend, backend and database                                                         |
 
 ---
 
-## 8. CI/CD Pipeline
+## 8. CI/CD Pipeline · Standard
 
-| Section | What to write |
-|---|---|
-| 8.1 Branch Strategy | Model, branch names (`feat/…`, `fix/…`), PR rules (reviewers, required checks) |
-| 8.2 Pipeline Stages | Each stage, the tool, when it runs, and what fails the build |
-| 8.3 Release & Rollback | Version tags, release notes, how to roll back app and DB |
+`CONVENTIONS.md` §6.3. List only differences.
 
-**Migration rule:** migrations run before the new app version starts and must be backward compatible with the previous version (expand → migrate → contract) so a rollback doesn't break.
+## 9. Observability · Standard
+
+`CONVENTIONS.md` §6.4. Fill who receives alerts; an alert with no owner is not noticed.
 
 ---
 
-## 9. Observability
-Logs (structured JSON with `requestId` from the BE middleware), metrics (latency, error rate, saturation), error tracking on FE and BE, uptime checks on `/health`, and job failures. Each row needs an alert condition and a recipient, or it won't be noticed.
+## 10. Backup & Disaster Recovery · Core
+
+| Term | Meaning                      | Comes from                     |
+| ---- | ---------------------------- | ------------------------------ |
+| RPO  | Maximum acceptable data loss | BRD 3.4 "acceptable data loss" |
+| RTO  | Maximum acceptable downtime  | BRD 3.4 "impact of downtime"   |
+
+**10.2 Backup Plan & Scenarios · Standard:** the standard backup (`CONVENTIONS.md` §6.5) gives roughly RPO ≤ 5 min and RTO of a few hours. List changes only when the targets need more (e.g. multi-region for RTO < 1 hour).
 
 ---
 
-## 10. Backup & Disaster Recovery
+## 11. Testing Strategy · Standard
 
-| Term | Meaning | Comes from |
-|---|---|---|
-| RPO | Maximum acceptable data loss | BRD 3.5 "acceptable data loss" |
-| RTO | Maximum acceptable downtime | BRD 3.5 "impact of downtime" |
+`CONVENTIONS.md` §6.6. Name the critical flows that get end-to-end tests: the ones that lose money or trust if broken.
 
-| Section | What to write |
-|---|---|
-| 10.2 Backup Plan | Per asset: method, frequency, retention, location (preferably another region/account), encryption |
-| 10.3 Disaster Scenarios | At minimum: data corruption/accidental delete, provider/region outage, bad deployment, leaked secret. Detection, steps, owner, expected time (must be ≤ RTO) |
-| 10.4 DR Testing | Scheduled restore tests and results |
+## 12. Traceability Matrix · Optional
 
-**Tip:** a backup you've never restored is not a backup.
+For large projects or audits. Normally the feature column in ADB 04 §7 and ADB 05 §5.1 already gives the links.
 
----
+## 13. ADRs · Optional
 
-## 11. Testing Strategy
-Per test type: tool, scope, coverage target, and when it runs. Unit tests focus on `*.service.ts` (where business rules live). Bruno collections in `bruno-API/` mirror the route catalog. E2E covers the few flows that lose money or trust if broken.
+One per decision that differs from `CONVENTIONS.md` or isn't obvious: context, decision, alternatives, consequences. Never edit an accepted ADR's decision; add a new one that supersedes it.
 
-## 12. Traceability Matrix
-One row per BRD feature, linking workflow → endpoint(s) → table(s) → screen(s) → test. Gaps in this table are gaps in the design: a feature with no endpoint, or an endpoint with no feature.
+## 14. Open Questions · Core
 
-## 13. ADRs
-| Field | Meaning |
-|---|---|
-| Context | The problem and forces (requirements, constraints) |
-| Decision | What was chosen |
-| Alternatives | What else was considered |
-| Consequences | Trade-offs, good and bad |
-
-Never edit an accepted ADR to change the decision; add a new one that supersedes it.
-
-## 14. Open Questions
 Global numbering shared with all books (see BRD guideline §10).
