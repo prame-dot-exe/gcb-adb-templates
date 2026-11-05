@@ -10,7 +10,7 @@ Explains every section of `templates/04-BACKEND-SPEC.md`. Section numbers match 
 - **Detail only where needed.** A plain get/delete or a create/edit whose fields are just the table columns needs only its catalog row.
 - **Every endpoint traces to a BRD feature** and lists the tables it touches.
 - **Validation mirrors the database:** `max(200)` ↔ `varchar(200)`.
-- **Standard sections** list only differences from `CONVENTIONS.md`, each with an ADR. **Optional sections** get one line `N/A — reason` when they don't apply.
+- **Standard sections** list only differences from `CONVENTIONS.md`, each with an ADR. Optional sections that don't apply, and Standard sections with no differences, are left out and listed in Document Info → *Sections left out*.
 
 ---
 
@@ -70,7 +70,10 @@ Write a block only for:
 
 - every **search** endpoint: filter keys → columns and operators, sortable fields, default sort (these drive the indexes in ADB 03);
 - every **extra action**: body fields and rules;
-- every **create/edit** with business rules or fields that differ from the table columns.
+- every **create/edit** with business rules;
+- every **get** (or search) that returns related or computed data: a **Returns** line naming what is added, and how computed values are calculated (e.g. `members[]`, `progressPercent` = done ÷ all tasks).
+
+Without a block, create/edit accept the table's *Set by: User* columns (ADB 03) and get returns the table row.
 
 Each block lists body fields with rules, business rules with the code returned (from §5.1), and side effects (notifications, audit, jobs). Zod schemas and response types are written in code, not here.
 

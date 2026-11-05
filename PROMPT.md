@@ -102,15 +102,15 @@ Write **01 → 02 → 03 → 04 → 05** in a single pass, without waiting for a
 - **Plain words, short sentences.** Someone non-technical should be able to read the BRD; developers should be able to scan the others in minutes.
 - **Tables and bullets over paragraphs.** One idea per line. No filler, no repeating what another section already says; reference it instead (e.g. "See BRD §4.2").
 - **Write only what the section needs.** A small app gets short books. Don't pad sections to look complete.
-- **Follow the section tags.** **Core** sections are always filled. **Optional** sections get one line `N/A — reason` when they don't apply. **Standard** sections point to `CONVENTIONS.md` and list only differences, or `None`.
+- **Follow the section tags.** **Core** sections are always filled. **Optional** sections that don't apply are left out. **Standard** sections are left out unless the project differs from `CONVENTIONS.md`. List every left-out section in Document Info → *Sections left out*.
 - **One home per fact.** Write each fact once in the book that owns it and reference it elsewhere (permissions only in BRD §4.4, endpoints only in BE §7, response codes only in BE §5.1).
-- **Detail only where needed.** Endpoint details (BE §8) only for search endpoints, extra actions, and create/edit with business rules. Screen details (FE §5.2) only for non-standard screens.
+- **Detail only where needed, but never missing.** Endpoint details (BE §8) for search endpoints, extra actions, create/edit with business rules, and get with related or computed data (*Returns*). Every DB column says who sets it (*Set by*). Every screen says what it shows (FE §5.1 *Shows*); every dashboard and report lists its metrics and how each is calculated (FE §5.2).
 
 ### Template rules (no exceptions)
 
 1. **Same structure:** keep every heading, section number, order, and table column from the template. Do not add, rename, merge, reorder, or remove sections or columns. Repeat blocks (modules, tables, endpoints, screens, workflows) as needed using the template's block exactly. Example rows in templates are illustrations: write only the rows that apply.
 2. **Conventions stay fixed:** never copy `CONVENTIONS.md` into the books. Where the prototype differs from it, the book still follows the convention, and the difference goes in that book's Open Questions as "Prototype deviation: …".
-3. **No empty placeholders:** replace every `[placeholder]`. Use `N/A — reason` or `TBD — see Q-NN` (Q-NN must exist).
+3. **No empty placeholders:** replace every `[placeholder]`. Use `TBD — see Q-NN` for unresolved items (Q-NN must exist).
 4. **Mark uncertainty:** anything not confirmed by the prototype or by me gets `(Assumption A-NN)` with a matching row in BRD §6.2.
 5. **Business → technical:** every NFR, capacity number, RPO/RTO, and index cites the answer or assumption it comes from. Show the arithmetic in SRS §1.1.
 6. **IDs and traceability:** use the ID scheme in README.md. Every endpoint (BE §7) names its feature and tables; every screen (FE §5.1) names its feature and endpoints; every feature has at least one endpoint and screen. The SRS §12 matrix is optional.
@@ -128,7 +128,7 @@ Write **01 → 02 → 03 → 04 → 05** in a single pass, without waiting for a
 
 Before delivering, check (don't narrate the check):
 
-- All template sections and columns are present, in order, unchanged; Optional sections that don't apply have `N/A — reason`.
+- Every Core section and every table column is present, in order, with the template's numbers; every left-out section is listed in *Sections left out*.
 - No raw `[placeholder]` remains.
 - Every `TBD` points to an existing Q-NN; every assumption reference points to an existing A-NN.
 - The cross-book agreements in rule 8 hold.

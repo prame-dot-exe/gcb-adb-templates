@@ -1,7 +1,7 @@
 # [Project Name] — ADB 04: Backend Specification
 
 > **Application Design Book (ADB) — Book 4 of 5.** Every endpoint the backend exposes, with the rules that are specific to this project. The API shape, folder structure and code patterns are in `CONVENTIONS.md` §3–4.
-> Guideline: `guidelines/04-BACKEND-SPEC.guide.md`. Section tags: **Core** = always fill · **Optional** = fill only if it applies, otherwise one line `N/A — reason` · **Standard** = follows `CONVENTIONS.md`, list only differences (each needs an ADR in ADB 02 §13). Untagged subsections follow their parent's tag.
+> Guideline: `guidelines/04-BACKEND-SPEC.guide.md`. Section tags: **Core** = always fill · **Optional** = fill only if it applies, otherwise leave the section out · **Standard** = follows `CONVENTIONS.md`; leave it out unless the project differs (each difference needs an ADR in ADB 02 §13). Untagged subsections follow their parent's tag. List every section left out in Document Info → *Sections left out*; keep the numbers of the sections you write.
 > Keep it short: tables, not prose. Use `TBD — see Q-NN` for unresolved items.
 
 ---
@@ -20,6 +20,7 @@
 | Status       | [Draft / In Review / Approved / Deprecated] |
 | Author(s)    | [Name, role]                                |
 | Last updated | [YYYY-MM-DD]                                |
+| Sections left out | [§x Name (not used) · §y Name (standard, no changes)] |
 | Repository   | [URL]                                       |
 
 ### Change Log
@@ -130,7 +131,7 @@
 
 ## 8. Endpoint Details
 
-> **Core**, but only for endpoints that need more than the catalog row: every **search**, every **extra action**, and every **create/edit with business rules or fields that differ from the table**. Plain get/delete and simple create/edit need no block: their fields are the table columns in ADB 03.
+> **Core**, but only for endpoints that need more than the catalog row: every **search**, every **extra action**, every **create/edit with business rules**, and every **get that returns related or computed data**. Plain get/delete and simple create/edit need no block: create/edit accept the table's *Set by: User* columns (ADB 03) and get returns the table row.
 
 ### EP-[CODE]-[NN]: `[METHOD] [path]`
 
@@ -150,6 +151,10 @@
 | [status]   | [status]       | IN       |
 
 Sortable: [createdAt, name] · Default: createdAt desc
+
+**Returns** _(get / search, only when it includes more than the table row)_
+
+[Project row + `members[]` (id, name, role) + `progressPercent` (done tasks ÷ all tasks × 100)]
 
 **Business rules & side effects**
 

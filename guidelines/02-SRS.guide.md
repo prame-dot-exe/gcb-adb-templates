@@ -8,8 +8,8 @@ Explains every section of `templates/02-SRS.md`. Section numbers match the templ
 
 - **Trace back to the BRD.** NFRs and recovery targets cite the BRD answer they come from; workflows cite features. If a number can't be traced, record it as an assumption.
 - **System level, not endpoint level.** Field-level detail belongs in ADB 03–05.
-- **Standard sections** list only differences from `CONVENTIONS.md`, each with an ADR in §13. Write `None` when there are none.
-- **Optional sections** get one line `N/A — reason` when they don't apply.
+- **Standard sections** list only differences from `CONVENTIONS.md`, each with an ADR in §13.
+- **Optional sections** that don't apply, and Standard sections with no differences, are left out and listed in Document Info → *Sections left out*.
 
 ---
 

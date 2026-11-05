@@ -11,7 +11,7 @@ Explains every section of `templates/03-DB-SCHEMA.md`. Section numbers match the
 - **Don't repeat standard columns** (`id`, `created_*`, `updated_*`, `deleted_at`) in the data dictionary.
 - **Group by module.** Tables belong to the BRD module that owns them; shared tables (users, roles, audit) go in `CORE`.
 - **Every table is used** by at least one endpoint in ADB 04 (its Tables column).
-- **Optional sections** get one line `N/A — reason` when they don't apply.
+- **Optional sections** that don't apply are left out and listed in Document Info → *Sections left out*.
 
 ---
 
@@ -52,7 +52,7 @@ One §4.x per module, one table block per table. Each block has two parts.
 - `UNIQUE` / `CHECK` for business rules that must never break (uniqueness, non-negative amounts), with a `-- BR-…` comment.
 - An index for every filter and sort of a search endpoint (ADB 04 §8) unless the table is tiny, with a `-- search: …` comment. Equality column first; `keyword` search uses a `pg_trgm` GIN index.
 
-**Data dictionary** — every non-standard column: type, required, and the business meaning with limits and an example ("Planned completion date (Bangkok day), e.g. 2027-03-31"). Use `varchar(n)` when the business has a real limit; the same `n` is the validation limit in the backend.
+**Data dictionary** — every non-standard column: type, required, **set by** (User = the form sends it; System = computed or generated; Action: … = changed only by an extra action such as *close*), and the business meaning with limits and an example ("Planned completion date (Bangkok day), e.g. 2027-03-31"). Use `varchar(n)` when the business has a real limit; the same `n` is the validation limit in the backend.
 
 ---
 

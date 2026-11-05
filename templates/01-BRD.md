@@ -1,7 +1,7 @@
 # [Project Name] — ADB 01: Business Requirements Document (BRD)
 
 > **Application Design Book (ADB) — Book 1 of 5.** Business view only: why, who, what, and what not. No technology here.
-> Guideline: `guidelines/01-BRD.guide.md`. Section tags: **Core** = always fill · **Optional** = fill only if it applies, otherwise one line `N/A — reason` · **Standard** = follows `CONVENTIONS.md`, list only differences. Untagged subsections follow their parent's tag.
+> Guideline: `guidelines/01-BRD.guide.md`. Section tags: **Core** = always fill · **Optional** = fill only if it applies, otherwise leave the section out · **Standard** = follows `CONVENTIONS.md`; leave it out unless the project differs (each difference needs an ADR in ADB 02 §13). Untagged subsections follow their parent's tag. List every section left out in Document Info → *Sections left out*; keep the numbers of the sections you write.
 > Keep it short: tables and bullets, plain words. Use `TBD — see Q-NN` for unresolved items.
 
 ---
@@ -20,6 +20,7 @@
 | Author(s)    | [Name, role]                                |
 | Approver(s)  | [Name, role]                                |
 | Last updated | [YYYY-MM-DD]                                |
+| Sections left out | [§x Name (not used) · §y Name (standard, no changes)] |
 
 ### Change Log
 

@@ -81,14 +81,14 @@ Every section in a template is tagged:
 | Tag          | Meaning                                                                                              |
 | ------------ | ---------------------------------------------------------------------------------------------------- |
 | **Core**     | Always fill.                                                                                         |
-| **Optional** | Fill only if it applies to this project; otherwise write one line `N/A — reason`.                    |
-| **Standard** | Follows [CONVENTIONS.md](CONVENTIONS.md). Write only the differences (each needs an ADR), or `None`. |
+| **Optional** | Fill only if it applies to this project; otherwise leave the section out. |
+| **Standard** | Follows [CONVENTIONS.md](CONVENTIONS.md). Write it only when the project differs (each difference needs an ADR); otherwise leave it out. |
 
 Untagged subsections follow their parent's tag.
 
 1. **Keep it simple.** Plain words, short sentences, tables and bullets instead of paragraphs. A small app gets short books.
 2. **One home per fact.** Write each fact once, in the book that owns it, and reference it elsewhere (e.g. permissions live only in BRD §4.4; endpoints only in Backend §7; response codes only in Backend §5.1).
-3. Keep every heading, section number, and table column. Don't delete sections; use `N/A — reason`.
+3. Keep every Core heading, all section numbers, and every table column. Sections you leave out are listed in Document Info → *Sections left out*, so readers know they were skipped on purpose; never renumber the rest.
 4. Replace every `[placeholder]`.
 5. Write `TBD — see Q-NN` when something is unresolved, and add Q-NN to that book's Open Questions.
 6. Mark unverified content `(Assumption A-NN)` and list it in BRD §6.2.

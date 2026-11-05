@@ -9,7 +9,7 @@ Explains every section of `templates/05-FRONTEND-SPEC.md`. Section numbers match
 - **Standard screens need no detail.** A list, create form, edit form or detail page that follows the conventions is fully described by its row in the screen list.
 - **Tokens, never raw colors.** List only the tokens that differ from the shadcn base theme.
 - **Every screen traces** to a BRD feature, a page in the sitemap, and the endpoints it calls (ADB 04 EP IDs).
-- **Standard sections** list only differences from `CONVENTIONS.md`, each with an ADR. **Optional sections** get one line `N/A — reason` when they don't apply.
+- **Standard sections** list only differences from `CONVENTIONS.md`, each with an ADR. Optional sections that don't apply, and Standard sections with no differences, are left out and listed in Document Info → *Sections left out*.
 
 ---
 
@@ -60,11 +60,11 @@ One plain-text tree of every page, written with `|-` and indented with `|  ` per
 
 ### 5.1 Screen List
 
-One row per page in the sitemap: ID, name, route, BRD feature, and the EP IDs it calls.
+One row per page in the sitemap: ID, name, route, **what it shows**, BRD feature, and the EP IDs it calls. *Shows* is one short line: the columns and filters of a list, the main sections of a detail page, or the fields of a form if they aren't simply the table's *Set by: User* columns.
 
 ### 5.2 Screen Detail
 
-Only for screens that are more than standard: dashboards, multi-step flows, conditional buttons, forms whose fields differ from the endpoint, or non-default loading/empty/error behavior (defaults: `CONVENTIONS.md` §5.4). One line of purpose, then the special elements and their behavior.
+**Every dashboard and report** gets a block with a *Metrics* table: each number, how it's calculated in plain words (what's counted, which filter, whose data), and the endpoint that provides it. Other screens only when more than standard: multi-step flows, conditional buttons, forms whose fields differ from the endpoint, or non-default loading/empty/error behavior (defaults: `CONVENTIONS.md` §5.4). One line of purpose, then the special elements and their behavior.
 
 ---
 

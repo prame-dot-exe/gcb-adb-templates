@@ -8,7 +8,7 @@ Explains every section of `templates/01-BRD.md`. Section numbers match the templ
 
 - **No technology.** No frameworks, tables, endpoints, or response codes. If you're writing `uuid` or `POST`, it belongs in ADB 02–05.
 - **Keep it short.** Tables and bullets, one idea per line. A small app gets a short BRD.
-- **Core sections are always filled; Optional sections** get one line `N/A — reason` when they don't apply.
+- **Core sections are always filled; Optional sections** are left out when they don't apply and listed in Document Info → *Sections left out*.
 - **Every feature is testable.** Each feature has acceptance criteria in Given / When / Then form.
 - **The BRD is upstream.** Other books reference BRD IDs (`F-PRJ-01`, `BR-PRJ-02`, `ROLE-01`). Never renumber an approved ID; retire it and add a new one.
 

@@ -1,7 +1,7 @@
 # [Project Name] — ADB 03: Database Schema
 
 > **Application Design Book (ADB) — Book 3 of 5.** PostgreSQL schema: one ERD for the whole database, then each module's tables as SQL plus a data dictionary.
-> Guideline: `guidelines/03-DB-SCHEMA.guide.md`. Section tags: **Core** = always fill · **Optional** = fill only if it applies, otherwise one line `N/A — reason` · **Standard** = follows `CONVENTIONS.md`, list only differences (each needs an ADR in ADB 02 §13). Untagged subsections follow their parent's tag.
+> Guideline: `guidelines/03-DB-SCHEMA.guide.md`. Section tags: **Core** = always fill · **Optional** = fill only if it applies, otherwise leave the section out · **Standard** = follows `CONVENTIONS.md`; leave it out unless the project differs (each difference needs an ADR in ADB 02 §13). Untagged subsections follow their parent's tag. List every section left out in Document Info → *Sections left out*; keep the numbers of the sections you write.
 > Keep it short: SQL + data dictionary per table, nothing else. Use `TBD — see Q-NN` for unresolved items.
 
 ---
@@ -20,6 +20,7 @@
 | Status            | [Draft / In Review / Approved / Deprecated] |
 | Author(s)         | [Name, role]                                |
 | Last updated      | [YYYY-MM-DD]                                |
+| Sections left out | [§x Name (not used) · §y Name (standard, no changes)] |
 | Database          | PostgreSQL [version]                        |
 
 ### Change Log
@@ -97,11 +98,11 @@ CREATE TABLE [table_name] (
 CREATE INDEX idx_[table]_[cols] ON [table_name] ([cols]) WHERE deleted_at IS NULL;  -- [search filter / sort]
 ```
 
-**Data dictionary** — every non-standard column (standard columns: `CONVENTIONS.md` §2.2).
+**Data dictionary** — every non-standard column (standard columns: `CONVENTIONS.md` §2.2). *Set by*: **User** = sent by create/edit forms · **System** = computed or generated (totals, running numbers) · **Action: …** = changed only by an extra action (e.g. status by *close*).
 
-| Column   | Type           | Required | Description                         |
-| -------- | -------------- | -------- | ----------------------------------- |
-| [column] | [varchar(200)] | [Yes]    | [Business meaning, limits, example] |
+| Column | Type | Required | Set by | Description |
+| --- | --- | --- | --- | --- |
+| [column] | [varchar(200)] | [Yes] | [User / System / Action: close] | [Business meaning, limits, example] |
 
 ---
 
@@ -127,7 +128,7 @@ CREATE INDEX idx_[table]_[cols] ON [table_name] ([cols]) WHERE deleted_at IS NUL
 
 ## 7. Data Retention & Privacy
 
-> **Core** when any table holds personal data; otherwise `N/A — no personal data`.
+> **Core** when any table holds personal data; otherwise leave it out.
 
 | Table   | PII columns    | Keep for   | Then                 |
 | ------- | -------------- | ---------- | -------------------- |

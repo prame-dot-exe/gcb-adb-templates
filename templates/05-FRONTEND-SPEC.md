@@ -1,7 +1,7 @@
 # [Project Name] — ADB 05: Frontend Specification
 
 > **Application Design Book (ADB) — Book 5 of 5.** The brand look, the sitemap, every screen, and how screens use the backend. Folder structure, token rules, API layer and code patterns are in `CONVENTIONS.md` §5.
-> Guideline: `guidelines/05-FRONTEND-SPEC.guide.md`. Section tags: **Core** = always fill · **Optional** = fill only if it applies, otherwise one line `N/A — reason` · **Standard** = follows `CONVENTIONS.md`, list only differences (each needs an ADR in ADB 02 §13). Untagged subsections follow their parent's tag.
+> Guideline: `guidelines/05-FRONTEND-SPEC.guide.md`. Section tags: **Core** = always fill · **Optional** = fill only if it applies, otherwise leave the section out · **Standard** = follows `CONVENTIONS.md`; leave it out unless the project differs (each difference needs an ADR in ADB 02 §13). Untagged subsections follow their parent's tag. List every section left out in Document Info → *Sections left out*; keep the numbers of the sections you write.
 > Keep it short: tables, not prose. Use `TBD — see Q-NN` for unresolved items.
 
 ---
@@ -19,6 +19,7 @@
 | Status              | [Draft / In Review / Approved / Deprecated] |
 | Author(s)           | [Name, role]                                |
 | Last updated        | [YYYY-MM-DD]                                |
+| Sections left out | [§x Name (not used) · §y Name (standard, no changes)] |
 | Repository          | [URL]                                       |
 | Figma / design file | [URL / none]                                |
 
@@ -113,13 +114,13 @@
 
 ### 5.1 Screen List
 
-| Screen ID | Screen         | Route             | Feature (BRD) | Endpoints (ADB 04) |
-| --------- | -------------- | ----------------- | ------------- | ------------------ |
-| SC-01     | [Project list] | /[scope]/[module] | F-[CODE]-xx   | [EP-CODE-02]       |
+| Screen ID | Screen | Route | Shows | Feature (BRD) | Endpoints (ADB 04) |
+| --- | --- | --- | --- | --- | --- |
+| SC-01 | [Project list] | /[scope]/[module] | [Columns: name, owner, status, due date · Filters: status, owner] | F-[CODE]-xx | [EP-CODE-02] |
 
 ### 5.2 Screen Detail
 
-> Only for screens that are more than a standard list, form, or detail page (`CONVENTIONS.md` §5.1, §5.4): dashboards, multi-step flows, special behavior, or forms whose fields differ from the endpoint.
+> Only for screens that are more than a standard list, form, or detail page (`CONVENTIONS.md` §5.1, §5.4): multi-step flows, special behavior, or forms whose fields differ from the endpoint. **Every dashboard and report needs a block** with its metrics.
 
 #### SC-[NN]: [Screen name]
 
@@ -128,6 +129,12 @@
 | Element        | Behavior                                                                   |
 | -------------- | -------------------------------------------------------------------------- |
 | [Close button] | [Shown only when all issues are closed; confirms before calling EP-PRJ-06] |
+
+**Metrics** _(dashboards and reports)_
+
+| Metric | How it's calculated | Endpoint |
+| --- | --- | --- |
+| [Overdue tasks] | [Open tasks with due date before today, my projects only] | [EP-DSH-01] |
 
 ---
 

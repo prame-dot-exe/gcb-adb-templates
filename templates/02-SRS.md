@@ -1,7 +1,7 @@
 # [Project Name] — ADB 02: Software Requirements Specification (SRS)
 
 > **Application Design Book (ADB) — Book 2 of 5.** The technical view of the whole system: quality targets, architecture, workflows, security, infrastructure, and recovery. Tables live in ADB 03, endpoints in ADB 04, screens in ADB 05.
-> Guideline: `guidelines/02-SRS.guide.md`. Section tags: **Core** = always fill · **Optional** = fill only if it applies, otherwise one line `N/A — reason` · **Standard** = follows `CONVENTIONS.md`, list only differences (each needs an ADR in §13). Untagged subsections follow their parent's tag.
+> Guideline: `guidelines/02-SRS.guide.md`. Section tags: **Core** = always fill · **Optional** = fill only if it applies, otherwise leave the section out · **Standard** = follows `CONVENTIONS.md`; leave it out unless the project differs (each difference needs an ADR in ADB 02 §13). Untagged subsections follow their parent's tag. List every section left out in Document Info → *Sections left out*; keep the numbers of the sections you write.
 > Keep it short: tables and bullets. Use `TBD — see Q-NN` for unresolved items.
 
 ---
@@ -19,6 +19,7 @@
 | Status               | [Draft / In Review / Approved / Deprecated] |
 | Author(s)            | [Name, role]                                |
 | Last updated         | [YYYY-MM-DD]                                |
+| Sections left out | [§x Name (not used) · §y Name (standard, no changes)] |
 | Based on BRD version | [ADB 01 vX.Y.Z]                             |
 
 ### Change Log
