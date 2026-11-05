@@ -25,40 +25,57 @@ If you cannot open any of these files, stop and tell me which ones. Do not recon
 
 **Prototype:** [attached code / repo link / screens / Figma / description]
 
+## Step 0: Ask the language first
+
+Before anything else, ask me one question with your question tool (if you have none, ask it as a short numbered list):
+
+> **Which language should we use?**
+> 1. English
+> 2. ภาษาไทย (Thai)
+> 3. Tiếng Việt (Vietnamese)
+
+Use the chosen language for **everything from now on**: every chat message, every question and option, and the text of all five books. Keep code, IDs (e.g. `BRD-F-01`), table and column names, URLs, and technical terms that have no common translation in English. This question does not count toward the 20-question limit.
+
 ## Step 1: Analyze silently, then show a short summary
 
 Study the prototype thoroughly: screens, routes, flows, data models, migrations, API calls, roles, integrations, libraries, folder structure, configuration, and seed data. Map everything you can onto all five templates **yourself**. Do not show me a section-by-section gap analysis.
 
 Then show me **one short message** (fits on one screen):
-1. **What I understood:** 3–6 bullets in plain business words (what the app does, for whom, main flows).
-2. **Modules:** the proposed module list (code, name, submodules) as a small table.
-3. **Coverage:** one line, e.g. "The prototype answers ~70% of the books. I need up to N questions for the rest."
+1. **What I understood:** 3–6 bullets in everyday words (what the app does, who uses it, what they do in it).
+2. **Main parts of the app:** a simple list like "Projects: create, track, close" (keep module codes for the books, not the chat).
+3. **What's left:** one line, e.g. "Your prototype already answers most of it. I have up to N quick questions."
 
 Then go straight to Step 2.
 
 ## Step 2: Ask at most 20 questions, all business-level
 
 ### Choosing the questions
-- **Hard limit: 20 questions in total**, including confirming the module list and your guesses. Fewer is better.
+- **Hard limit: 20 questions in total** (not counting the language question), including confirming the main parts of the app and your guesses. Fewer is better.
 - **Pick by impact.** List every gap across all five books, then choose the questions whose answers fill the most gaps at once. One good business question usually answers several technical fields (see the table below).
 - **Everything not asked gets a sensible default.** Choose it from the prototype, the guidelines, and common practice, then record it as an assumption (BRD §6.2). Never ask what you can reasonably decide yourself.
-- **Never ask technical or jargon questions.** Ask what a business owner can answer, then **you** translate it.
+- **Never ask technical questions.** Ask what anyone who runs the work day to day can answer, then **you** translate it into technical requirements.
 
-| Don't ask (technical) | Ask instead (business) | You derive |
+### Make every question non-technical
+- **Talk about their work, not the software.** Use the words from their app and business ("orders", "sales staff", "approve a quote"), never system words.
+- **Banned words in questions and options:** module, role, permission, database, record, field, API, server, integration, status, workflow, lifecycle, SLA, uptime, backup, data retention, latency, scale, deploy, enum, and any acronym. Use everyday words instead ("kinds of people", "steps", "how long to keep", "what if it stops working").
+- **Use a real example or a short story** from their app instead of an abstract question: "When a sales rep finishes a quote, who checks it before it goes to the customer?" not "What is the approval workflow?".
+- **Options are everyday answers** a person can pick in two seconds: "A few people / A whole team (10–50) / The whole company (hundreds)", not numbers in technical units.
+
+| Don't ask (technical) | Ask instead (everyday words) | You derive |
 |---|---|---|
-| Requests per second? | How many people will use it at launch and in a year? How many at the busiest moment, and when is that? | Capacity, NFRs (SRS §1) |
-| Uptime SLA, RPO/RTO? | If the app is down or loses the last hour of data at the busiest time, what happens? | Availability, backup, DR (SRS §10) |
-| Latency target? | Are people in a hurry when they use it (at a counter, in a meeting)? | Performance NFR |
-| RBAC model? | What kinds of people use it? Who must **not** see or change what? | Roles, permissions (BRD §4.4, BE §6.3) |
-| Soft or hard delete, audit? | If someone deletes something by mistake, do you need it back and to know who did it? | Soft delete, audit log |
-| Retention, PDPA? | How far back do people need to look? Does a law or auditor require keeping records? | Retention, anonymization (DB §7) |
-| Region, devices? | Where are users, and what device do they use for this task? | Hosting, breakpoints |
-| Integration fallback? | If email/LINE/payment is down for an hour, what should happen? | Failure handling, jobs |
-| Enums, state machine? | What stages does a [record] go through? Who moves it? Can it go back? | Status lifecycle, enums |
-| Indexes, filters? | What do people search and sort by? How many records after a year? | Filters, indexes |
-| Design tokens, i18n? | Brand colors, logo, font? Thai, English, or both? | Tokens (FE §3), language |
+| Requests per second? | About how many people will use it at first, and in a year? Is there a time when everyone uses it at once, like Monday morning or month-end? | Capacity, NFRs (SRS §1) |
+| Uptime SLA, RPO/RTO? | If the app stopped working for an hour on your busiest day, what would happen? And if today's work disappeared? | Availability, backup, DR (SRS §10) |
+| Latency target? | When people use it, are they in a rush, like with a customer waiting? | Performance NFR |
+| RBAC model? | Who uses it (e.g. staff, managers, admins)? Is there anything some of them must never see or change? | Roles, permissions (BRD §4.4, BE §6.3) |
+| Soft or hard delete, audit? | If someone deletes something by mistake, should you be able to get it back and see who did it? | Soft delete, audit log |
+| Retention, PDPA? | How long do you need to keep old information? Does anyone (law, auditor, accounting) require it? | Retention, anonymization (DB §7) |
+| Region, devices? | Where are the users, and are they at a desk or on their phones? | Hosting, breakpoints |
+| Integration fallback? | If emails or LINE messages couldn't be sent for an hour, is that a problem? | Failure handling, jobs |
+| Enums, state machine? | What steps does a [quote / order / request] go through from start to finish? Who moves it to the next step? Can it go back? | Status lifecycle, enums |
+| Indexes, filters? | When people look for something, what do they type or pick? Roughly how many will there be after a year? | Filters, indexes |
+| Design tokens? | Do you have brand colors or a logo we should use? | Tokens (FE §3) |
 
-Typical priorities: purpose and success metric, user types and what each must not do, the main record lifecycles, volumes and busiest moment, what's unacceptable if it fails, must-have for launch vs. later, notifications and reports, brand and language.
+Typical priorities: why the app exists and how you'll know it worked, who uses it and what they must not do, the steps of the main items, how many people and the busiest time, what hurts most if it breaks, what's needed on day one vs. later, notifications and reports, brand.
 
 ### Asking them (simple chat UX)
 - **Use your question tool if you have one** (e.g. `AskUserQuestion`, ask-user, or interactive options) instead of writing questions as plain text. If you have none, use a numbered list with lettered options (1a, 1b…) so I can reply in a few characters.
@@ -67,7 +84,7 @@ Typical priorities: purpose and success metric, user types and what each must no
 - **No explanations unless needed.** At most a few words on why it matters.
 - **Push back only on what matters:** if an answer is vague ("a lot", "fast") or contradicts the prototype, spend one question to clarify it, within the 20-question budget.
 - **"I don't know"** → use your recommended default as an assumption and log an open question (global Q-NN) with an owner. Don't ask again.
-- **Show progress** in one line after each round, e.g. "Questions 10/20 · next: volumes and reports".
+- **Show progress** in one line after each round, e.g. "Questions 10/20 · next: how many people and reports".
 - **Stop early** once the remaining gaps can be filled with safe defaults. Then say: "I have what I need. Writing all five books now." Do not ask for permission.
 
 ## Step 3: Write all five books in one go
@@ -114,7 +131,7 @@ After the five files, end with a **short handover** (fits on one screen):
 ## Style
 - Talk to me like a sharp, friendly consultant: direct, brief, no jargon.
 - Keep every chat message short. Detail goes in the books, not the chat.
-- Write the books in clear, simple English. [Change if needed, e.g. "Write the books in Thai, keeping technical terms, code, and IDs in English."]
+- Use the language chosen in Step 0 for chat and books, in clear, simple wording.
 - Never present invented facts as confirmed. When unsure, decide a default and mark it as an assumption.
 
-Start with Step 1 now.
+Start with Step 0 now.
